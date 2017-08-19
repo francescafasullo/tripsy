@@ -1,16 +1,22 @@
 'use strict'
 
 const db = require('APP/db')
-    , {User, Thing, Favorite, Promise} = db
+    , {User, Activity, Place, Trip, Hotel, Restaurant, Day, DayHotel, Promise} = db
     , {mapValues} = require('lodash')
 
 function seedEverything() {
   const seeded = {
     users: users(),
-    things: things(),
+    places: places()
+    // activities: activities(),
   }
 
-  seeded.favorites = favorites(seeded)
+  seeded.activities = activities(seeded)
+  seeded.trips = trips(seeded)
+  seeded.hotels = hotels(seeded)
+  seeded.restaurants = restaurants(seeded)
+  seeded.days = days(seeded)
+  seeded.dayHotels = dayHotels(seeded)
 
   return Promise.props(seeded)
 }
@@ -26,44 +32,190 @@ const users = seed(User, {
     email: 'barack@example.gov',
     password: '1234'
   },
+  francesca: {
+    name: 'Francesca',
+    email: 'francescafasullo@gmail.com',
+    password: 'password'
+  }
 })
 
-const things = seed(Thing, {
-  surfing: {name: 'surfing'},
-  smiting: {name: 'smiting'},
-  puppies: {name: 'puppies'},
+const places = seed(Place, {
+  highline: {
+    street: '511 West 23rd Street',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.7479925, -74.0047649]
+  },
+  chelseaMarket: {
+    street: '75 9th Avenue',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.74217059999999, -74.0050918]
+  },
+  met: {
+    street: '1000 5th Ave',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.7794366, -73.96324400000003]
+  },
+  standard: {
+    street: '848 Washington Street',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.7409232, -74.00811099999999]
+  },
+  greenwichHotel: {
+    street: '377 Greenwich Street',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.71982200000001, -74.00986069999999]
+  },
+  missionChinese: {
+    street: '171 East Broadway',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.7139327, -73.98965290000001]
+  },
+  odeon: {
+    street: '145 West Broadway',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.71697899999999, -74.007834]
+  },
+  spicyVillage: {
+    street: '68 Forsyth Street #B',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.716974, -73.99325499999998]
+  },
+  coucou: {
+    street: '138 Lafayette Street',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.719139, -74.00025]
+  },
+  wildair: {
+    street: '142 Orchard Street',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.7200208, -73.98916329999997]
+  },
+  boons: {
+    street: '7 Spring Street',
+    city: 'New York',
+    state: 'NY',
+    country: 'United States',
+    location: [40.7213514, -73.99435849999998]
+  }
 })
 
-const favorites = seed(Favorite,
-  // We're specifying a function here, rather than just a rows object.
-  // Using a function lets us receive the previously-seeded rows (the seed
-  // function does this wiring for us).
-  //
-  // This lets us reference previously-created rows in order to create the join
-  // rows. We can reference them by the names we used above (which is why we used
-  // Objects above, rather than just arrays).
-  ({users, things}) => ({
-    // The easiest way to seed associations seems to be to just create rows
-    // in the join table.
-    'obama loves surfing': {
-      user_id: users.barack.id,    // users.barack is an instance of the User model
-                                   // that we created in the user seed above.
-                                   // The seed function wires the promises so that it'll
-                                   // have been created already.
-      thing_id: things.surfing.id  // Same thing for things.
+const hotels = seed(Hotel,
+  ({users, places}) => ({
+    'theStandard': {
+      user_id: users.francesca.id,
+      place_id: places.standard.id,
+      name: 'The Standard'
     },
-    'god is into smiting': {
-      user_id: users.god.id,
-      thing_id: things.smiting.id
+    'greenwichHotel': {
+      user_id: users.francesca.id,
+      place_id: places.greenwichHotel.id,
+      name: 'The Greenwich Hotel'
+    }
+  })
+)
+
+const restaurants = seed(Restaurant,
+  ({users, places}) => ({
+    'missionChinese': {
+      user_id: users.francesca.id,
+      place_id: places.missionChinese.id,
+      name: 'Mission Chinese'
     },
-    'obama loves puppies': {
-      user_id: users.barack.id,
-      thing_id: things.puppies.id
+    'theOdeon': {
+      user_id: users.francesca.id,
+      place_id: places.odeon.id,
+      name: 'The Odeon'
     },
-    'god loves puppies': {
-      user_id: users.god.id,
-      thing_id: things.puppies.id
+    'spicyVillage': {
+      user_id: users.francesca.id,
+      place_id: places.spicyVillage.id,
+      name: 'Spicy Village'
     },
+    'leCoucou': {
+      user_id: users.francesca.id,
+      place_id: places.coucou.id,
+      name: 'Le Coucou'
+    },
+    'wildair': {
+      user_id: users.francesca.id,
+      place_id: places.wildair.id,
+      name: 'Wildair'
+    },
+    'uncleBoons': {
+      user_id: users.francesca.id,
+      place_id: places.boons.id,
+      name: 'Uncle Boons'
+    }
+  })
+)
+
+const activities = seed(Activity,
+  ({users, places}) => ({
+    'theHighLine': {
+      user_id: users.francesca.id,
+      place_id: places.highline.id,
+      name: 'The High Line'
+
+    },
+    'chelseaMarket': {
+      user_id: users.francesca.id,
+      place_id: places.chelseaMarket.id,
+      name: 'Chelsea Market'
+    },
+    'theMet': {
+      user_id: users.francesca.id,
+      place_id: places.met.id,
+      name: 'The Metropolitan Museum of Art'
+    },
+  })
+)
+
+const trips = seed(Trip,
+  ({users}) => ({
+    'francescaTrip': {
+      user_id: users.francesca.id,
+      name: 'My First Trip to NYC!',
+      start: '2017-10-02',
+      end: '2017-10-09'
+    },
+  })
+)
+
+const days = seed(Day,
+  ({trips}) => ({
+    'day1': {
+      trip_id: trips.francescaTrip.id,
+      number: 1
+    }
+  })
+)
+
+const dayHotels = seed(DayHotel,
+  ({days, hotels}) => ({
+    'day1hotel': {
+      day_id: days.day1.id,
+      hotel_id: hotels.theStandard.id
+    }
   })
 )
 
@@ -135,4 +287,4 @@ function seed(Model, rows) {
   }
 }
 
-module.exports = Object.assign(seed, {users, things, favorites})
+module.exports = Object.assign(seed, {users, activities, places, trips, hotels, restaurants, days, dayHotels})

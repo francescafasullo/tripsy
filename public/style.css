@@ -1,0 +1,33 @@
+body {
+  background-color: #F7F9FB;
+  margin: 0;
+}
+
+.itinerary-selector {
+  /*background-color: #00425A;*/
+  height: 100%;
+  padding-bottom: 20px;
+}
+
+#map {
+  width: 100%;
+  height: calc(100vh - 50px);
+  margin-bottom: 20px;
+}
+
+.map-container {
+  padding: 0;
+}
+
+.no-margin {
+  width: 100%;
+}
+
+.itinerary-selector {
+  padding-left: 10px;
+}
+
+.itinerary {
+  padding-left: 10px;
+}
+
