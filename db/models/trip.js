@@ -8,6 +8,7 @@ module.exports = db => db.define('trips', {
   end: DATEONLY
 })
 
-module.exports.associations = (Trip, {User}) => {
+module.exports.associations = (Trip, {User, Day}) => {
   Trip.belongsTo(User)
+  Trip.hasMany(Day)
 }

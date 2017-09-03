@@ -6,6 +6,7 @@ module.exports = db => db.define('restaurants', {
   name: STRING,
 })
 
-module.exports.associations = (Restaurant, {Place}) => {
+module.exports.associations = (Restaurant, {Place, Day, DayRestaurant}) => {
   Restaurant.belongsTo(Place)
+  Restaurant.belongsToMany(Day, {through: DayRestaurant})
 }

@@ -31,3 +31,28 @@ body {
   padding-left: 10px;
 }
 
+.photo-tiles {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100vw;
+  font-size: 0;
+}
+
+.photo-tiles img {
+  padding: 0.4%;
+  width: 25%;
+  transition: .8s opacity;
+}
+
+.screen-width {
+  width: 100vw;
+}
+
+.app-title {
+  font-family: 'League Script', cursive;
+  font-size: 200%;
+  font-weight: bold;
+  color: blue;
+}
+

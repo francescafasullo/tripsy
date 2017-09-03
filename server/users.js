@@ -2,6 +2,7 @@
 
 const db = require('APP/db')
 const User = db.model('users')
+const Trip = db.model('trips')
 
 const {mustBeLoggedIn, forbidden} = require('./auth.filters')
 
@@ -26,6 +27,19 @@ module.exports = require('express').Router()
   .get('/:id',
     mustBeLoggedIn,
     (req, res, next) =>
-      User.findById(req.params.id)
+      User.findById(req.params.id, { include: [Trip] })
       .then(user => res.json(user))
       .catch(next))
+  .get('/:id/trips',
+    (req, res, next) => {
+      console.log('in the get')
+      return Trip.findAll({
+        where: {
+          user_id: req.params.id
+        }
+      })
+        .then((trips) => {
+          res.json(trips)
+        })
+        .catch(next)
+    })

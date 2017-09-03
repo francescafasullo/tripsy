@@ -1,14 +1,13 @@
 'use strict'
 
 const db = require('APP/db')
-    , {User, Activity, Place, Trip, Hotel, Restaurant, Day, DayHotel, Promise} = db
+    , {User, Activity, Place, Trip, Hotel, Restaurant, Day, DayHotel, DayRestaurant, DayActivity, Promise} = db
     , {mapValues} = require('lodash')
 
 function seedEverything() {
   const seeded = {
     users: users(),
     places: places()
-    // activities: activities(),
   }
 
   seeded.activities = activities(seeded)
@@ -17,6 +16,8 @@ function seedEverything() {
   seeded.restaurants = restaurants(seeded)
   seeded.days = days(seeded)
   seeded.dayHotels = dayHotels(seeded)
+  seeded.dayRestaurants = dayRestaurants(seeded)
+  seeded.dayActivities = dayActivities(seeded)
 
   return Promise.props(seeded)
 }
@@ -36,6 +37,16 @@ const users = seed(User, {
     name: 'Francesca',
     email: 'francescafasullo@gmail.com',
     password: 'password'
+  },
+  claire: {
+    name: 'Claire',
+    email: 'claire@claire.claire',
+    password: 'buttz'
+  },
+  sarah: {
+    name: 'Sarah Salami',
+    email: 'salamigrl@salami.club',
+    password: 'jenna'
   }
 })
 
@@ -219,6 +230,40 @@ const dayHotels = seed(DayHotel,
   })
 )
 
+const dayRestaurants = seed(DayRestaurant,
+  ({days, restaurants}) => ({
+    'day1restaurant1': {
+      day_id: days.day1.id,
+      restaurant_id: restaurants.missionChinese.id
+    },
+    'day1restaurant2': {
+      day_id: days.day1.id,
+      restaurant_id: restaurants.theOdeon.id
+    },
+    'day1restaurant3': {
+      day_id: days.day1.id,
+      restaurant_id: restaurants.uncleBoons.id
+    }
+  })
+)
+
+const dayActivities = seed(DayActivity,
+  ({days, activities}) => ({
+    'day1activity1': {
+      day_id: days.day1.id,
+      activity_id: activities.theHighLine.id
+    },
+    'day1activity2': {
+      day_id: days.day1.id,
+      activity_id: activities.chelseaMarket.id
+    },
+    'day1activity3': {
+      day_id: days.day1.id,
+      activity_id: activities.theMet.id
+    }
+  })
+)
+
 if (module === require.main) {
   db.didSync
     .then(() => db.sync({force: true}))
@@ -287,4 +332,4 @@ function seed(Model, rows) {
   }
 }
 
-module.exports = Object.assign(seed, {users, activities, places, trips, hotels, restaurants, days, dayHotels})
+module.exports = Object.assign(seed, {users, activities, places, trips, hotels, restaurants, days, dayHotels, dayRestaurants, dayActivities})

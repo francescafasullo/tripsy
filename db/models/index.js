@@ -21,7 +21,9 @@ const app = require('APP')
       Place: require('./place'),
       Trip: require('./trip'),
       Day: require('./day'),
-      DayHotel: require('./dayhotel')
+      DayHotel: require('./dayhotel'),
+      DayRestaurant: require('./dayrestaurant'),
+      DayActivity: require('./dayactivity')
       // ---------- Add new models here ----------
     }
     , {mapValues} = require('lodash')

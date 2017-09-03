@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { mapKey } from '../../secrets.js'
 import { withGoogleMap, GoogleMap, InfoWindow, Marker, DirectionRenderer, places } from 'react-google-maps'
 import SearchBox from '../../node_modules/react-google-maps/lib/places/SearchBox.js'
+import store from '../store'
 
 let userLat, userLong, map
 
@@ -46,6 +47,7 @@ export default class Planner extends Component {
   }
 
   render() {
+    console.log('PLANNER PROPS', this.props)
     return (
       <div className="container no-margin clearfix">
         <div className="row">
