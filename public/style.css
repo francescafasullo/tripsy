@@ -56,3 +56,15 @@ body {
   color: blue;
 }
 
+.account-name {
+  color: black;
+  margin-right: 10px;
+}
+
+.logout {
+  margin-left: 10px;
+}
+
+.whoami {
+  margin-top: 10px;
+}

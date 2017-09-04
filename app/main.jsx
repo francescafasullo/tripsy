@@ -21,7 +21,7 @@ import Home from './components/Home'
 import NavigationContainer from './containers/NavigationContainer'
 import PlannerContainer from './containers/PlannerContainer'
 import AccountContainer from './containers/AccountContainer'
-import { fetchTrips, fetchTrip } from './reducers/trip.jsx'
+import { fetchTrips, fetchTrip, setFirstDay, fetchDays } from './reducers/trip.jsx'
 
 export const onAccountEnter = nextRouterState => {
   const userId = nextRouterState.params.userId
@@ -31,6 +31,8 @@ export const onAccountEnter = nextRouterState => {
 export const onPlannerEnter = nextRouterState => {
   const tripId = nextRouterState.params.tripId
   store.dispatch(fetchTrip(tripId))
+  store.dispatch(setFirstDay(tripId))
+  store.dispatch(fetchDays(tripId))
 }
 
 const ExampleApp = connect(

@@ -1,14 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { Button } from 'react-bootstrap'
 
 export const WhoAmI = ({ user, logout }) => (
   <div className="whoami">
     <span className="whoami-user-name">
-      <Link to={`/users/${user.id}`}>
-      {user && user.name}
+      <Link className="account-link" to={`/users/${user.id}`}>
+       Hello, {user && user.name}!
       </Link>
     </span>
-    <button className="logout" onClick={logout}>Logout</button>
+    <Button bsSize="small" className="logout btn btn-secondary" onClick={logout}>Logout</Button>
   </div>
 )
 

@@ -1,17 +1,16 @@
 'use strict'
 
 const db = require('APP/db')
-    , {User, Activity, Place, Trip, Hotel, Restaurant, Day, DayHotel, DayRestaurant, DayActivity, Promise} = db
+    , {User, Activity, Trip, Hotel, Restaurant, Day, DayHotel, DayRestaurant, DayActivity, Promise} = db
     , {mapValues} = require('lodash')
 
 function seedEverything() {
   const seeded = {
     users: users(),
-    places: places()
   }
 
-  seeded.activities = activities(seeded)
   seeded.trips = trips(seeded)
+  seeded.activities = activities(seeded)
   seeded.hotels = hotels(seeded)
   seeded.restaurants = restaurants(seeded)
   seeded.days = days(seeded)
@@ -50,157 +49,6 @@ const users = seed(User, {
   }
 })
 
-const places = seed(Place, {
-  highline: {
-    street: '511 West 23rd Street',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.7479925, -74.0047649]
-  },
-  chelseaMarket: {
-    street: '75 9th Avenue',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.74217059999999, -74.0050918]
-  },
-  met: {
-    street: '1000 5th Ave',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.7794366, -73.96324400000003]
-  },
-  standard: {
-    street: '848 Washington Street',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.7409232, -74.00811099999999]
-  },
-  greenwichHotel: {
-    street: '377 Greenwich Street',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.71982200000001, -74.00986069999999]
-  },
-  missionChinese: {
-    street: '171 East Broadway',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.7139327, -73.98965290000001]
-  },
-  odeon: {
-    street: '145 West Broadway',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.71697899999999, -74.007834]
-  },
-  spicyVillage: {
-    street: '68 Forsyth Street #B',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.716974, -73.99325499999998]
-  },
-  coucou: {
-    street: '138 Lafayette Street',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.719139, -74.00025]
-  },
-  wildair: {
-    street: '142 Orchard Street',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.7200208, -73.98916329999997]
-  },
-  boons: {
-    street: '7 Spring Street',
-    city: 'New York',
-    state: 'NY',
-    country: 'United States',
-    location: [40.7213514, -73.99435849999998]
-  }
-})
-
-const hotels = seed(Hotel,
-  ({users, places}) => ({
-    'theStandard': {
-      user_id: users.francesca.id,
-      place_id: places.standard.id,
-      name: 'The Standard'
-    },
-    'greenwichHotel': {
-      user_id: users.francesca.id,
-      place_id: places.greenwichHotel.id,
-      name: 'The Greenwich Hotel'
-    }
-  })
-)
-
-const restaurants = seed(Restaurant,
-  ({users, places}) => ({
-    'missionChinese': {
-      user_id: users.francesca.id,
-      place_id: places.missionChinese.id,
-      name: 'Mission Chinese'
-    },
-    'theOdeon': {
-      user_id: users.francesca.id,
-      place_id: places.odeon.id,
-      name: 'The Odeon'
-    },
-    'spicyVillage': {
-      user_id: users.francesca.id,
-      place_id: places.spicyVillage.id,
-      name: 'Spicy Village'
-    },
-    'leCoucou': {
-      user_id: users.francesca.id,
-      place_id: places.coucou.id,
-      name: 'Le Coucou'
-    },
-    'wildair': {
-      user_id: users.francesca.id,
-      place_id: places.wildair.id,
-      name: 'Wildair'
-    },
-    'uncleBoons': {
-      user_id: users.francesca.id,
-      place_id: places.boons.id,
-      name: 'Uncle Boons'
-    }
-  })
-)
-
-const activities = seed(Activity,
-  ({users, places}) => ({
-    'theHighLine': {
-      user_id: users.francesca.id,
-      place_id: places.highline.id,
-      name: 'The High Line'
-
-    },
-    'chelseaMarket': {
-      user_id: users.francesca.id,
-      place_id: places.chelseaMarket.id,
-      name: 'Chelsea Market'
-    },
-    'theMet': {
-      user_id: users.francesca.id,
-      place_id: places.met.id,
-      name: 'The Metropolitan Museum of Art'
-    },
-  })
-)
-
 const trips = seed(Trip,
   ({users}) => ({
     'francescaTrip': {
@@ -218,6 +66,132 @@ const days = seed(Day,
       trip_id: trips.francescaTrip.id,
       number: 1
     }
+  })
+)
+
+const hotels = seed(Hotel,
+  ({users, trips}) => ({
+    'theStandard': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'The Standard',
+      street: '848 Washington Street',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.7409232, -74.00811099999999]
+    },
+    'greenwichHotel': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'The Greenwich Hotel',
+      street: '377 Greenwich Street',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.71982200000001, -74.00986069999999]
+    }
+  })
+)
+
+const restaurants = seed(Restaurant,
+  ({users, trips}) => ({
+    'missionChinese': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'Mission Chinese',
+      street: '171 East Broadway',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.7139327, -73.98965290000001]
+    },
+    'theOdeon': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'The Odeon',
+      street: '145 West Broadway',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.71697899999999, -74.007834]
+    },
+    'spicyVillage': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'Spicy Village',
+      street: '68 Forsyth Street #B',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.716974, -73.99325499999998]
+    },
+    'leCoucou': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'Le Coucou',
+      street: '138 Lafayette Street',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.719139, -74.00025]
+    },
+    'wildair': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'Wildair',
+      street: '142 Orchard Street',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.7200208, -73.98916329999997]
+    },
+    'uncleBoons': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'Uncle Boons',
+      street: '7 Spring Street',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.7213514, -73.99435849999998]
+    }
+  })
+)
+
+const activities = seed(Activity,
+  ({users, trips}) => ({
+    'theHighLine': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'The High Line',
+      street: '511 West 23rd Street',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.7479925, -74.0047649]
+
+    },
+    'chelseaMarket': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'Chelsea Market',
+      street: '75 9th Avenue',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.74217059999999, -74.0050918]
+    },
+    'theMet': {
+      user_id: users.francesca.id,
+      trip_id: trips.francescaTrip.id,
+      name: 'The Metropolitan Museum of Art',
+      street: '1000 5th Ave',
+      city: 'New York',
+      state: 'NY',
+      country: 'United States',
+      location: [40.7794366, -73.96324400000003]
+    },
   })
 )
 
@@ -332,4 +306,4 @@ function seed(Model, rows) {
   }
 }
 
-module.exports = Object.assign(seed, {users, activities, places, trips, hotels, restaurants, days, dayHotels, dayRestaurants, dayActivities})
+module.exports = Object.assign(seed, {users, activities, trips, hotels, restaurants, days, dayHotels, dayRestaurants, dayActivities})

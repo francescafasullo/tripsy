@@ -3,6 +3,7 @@ import { mapKey } from '../../secrets.js'
 import { withGoogleMap, GoogleMap, InfoWindow, Marker, DirectionRenderer, places } from 'react-google-maps'
 import SearchBox from '../../node_modules/react-google-maps/lib/places/SearchBox.js'
 import store from '../store'
+import { Button } from 'react-bootstrap'
 
 let userLat, userLong, map
 
@@ -47,7 +48,7 @@ export default class Planner extends Component {
   }
 
   render() {
-    console.log('PLANNER PROPS', this.props)
+    console.log('PLANNER PROPS', this.props.trip)
     return (
       <div className="container no-margin clearfix">
         <div className="row">
@@ -67,20 +68,35 @@ export default class Planner extends Component {
             <div className="itinerary-selector panel panel-dafault">
               <h3>Hotels</h3>
               <select>
-                <option value="first">First</option>
-                <option value="second">Second</option>
+                {
+                  this.props.trip ? this.props.trip.trip.hotels.map(hotel => {
+                    return (
+                      <option key={hotel.id} value={hotel.name}>{hotel.name}</option>
+                    )
+                  }) : null
+                }
               </select>
               <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
               <h3>Restaurants</h3>
               <select>
-                <option value="first">First</option>
-                <option value="second">Second</option>
+                {
+                  this.props.trip ? this.props.trip.trip.restaurants.map(restaurant => {
+                    return (
+                      <option key={restaurant.id} value={restaurant.name}>{restaurant.name}</option>
+                    )
+                  }) : null
+                }
               </select>
               <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
               <h3>Activities</h3>
               <select>
-                <option value="first">First</option>
-                <option value="second">Second</option>
+                {
+                  this.props.trip ? this.props.trip.trip.activities.map(activity => {
+                    return (
+                      <option key={activity.id} value={activity.name}>{activity.name}</option>
+                    )
+                  }) : null
+                }
               </select>
               <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
             </div>
@@ -88,14 +104,41 @@ export default class Planner extends Component {
               <h3>Itinerary</h3>
               <div className="panel-heading">
                 <div className="day-buttons">
-                  <button className="btn btn-circle day-btn">1</button>
-                  <button className="btn btn-circle day-btn" id="day-add">+</button>
+                  {
+                    this.props.trip ? this.props.trip.days.map(day => {
+                      return (
+                        <Button key={day.id} className="btn btn-circle day-btn">{day.number}</Button>
+                      )
+                    }) : null
+                  }
+                  <Button className="btn btn-circle day-btn" id="day-add">+</Button>
                 </div>
               </div>
               <div className="panel-body">
-                <h4>Hotel</h4>
-                <h4>Restaurants</h4>
-                <h4>Activities</h4>
+                <h3>Hotel</h3>
+                  {
+                    this.props.trip ? this.props.trip.currentDay.hotels.map(hotel => {
+                      return (
+                        <h5 key={hotel.id}>{hotel.name}</h5>
+                      )
+                    }) : null
+                  }
+                <h3>Restaurants</h3>
+                  {
+                    this.props.trip ? this.props.trip.currentDay.restaurants.map(restaurant => {
+                      return (
+                        <h5 key={restaurant.id}>{restaurant.name}</h5>
+                      )
+                    }) : null
+                  }
+                <h3>Activities</h3>
+                  {
+                    this.props.trip ? this.props.trip.currentDay.activities.map(activity => {
+                      return (
+                        <h5 key={activity.id}>{activity.name}</h5>
+                      )
+                    }) : null
+                  }
               </div>
             </div>
           </div>

@@ -14,9 +14,10 @@ export default class Home extends React.Component {
           <img src="/homepageImages/black_sand_beach.jpg" />
           <img src="/homepageImages/blue_lagoon.jpg" />
           <img src="/homepageImages/brooklyn_bridge.jpg" />
-          <img src="/homepageImages/central_park.jpg" />
+          <img src="/homepageImages/sapa.jpg" />
           <img src="/homepageImages/dubrovnik.jpg" />
           <img src="/homepageImages/elephant_sanctuary.jpg" />
+          <img src="/homepageImages/central_park.jpg" />
           <img src="/homepageImages/grand_canyon.jpg" />
           <img src="/homepageImages/great_barrier_reef.jpg" />
           <img src="/homepageImages/ha_long" />
@@ -27,7 +28,6 @@ export default class Home extends React.Component {
           <img src="/homepageImages/plitvice.jpg" />
           <img src="/homepageImages/positano.jpg" />
           <img src="/homepageImages/sagrada_familia.jpg" />
-          <img src="/homepageImages/sapa.jpg" />
           <img src="/homepageImages/sunflower_field.jpg" />
         </div>
       </div>

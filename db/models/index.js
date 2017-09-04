@@ -18,7 +18,7 @@ const app = require('APP')
       Activity: require('./activity'),
       Restaurant: require('./restaurant'),
       Hotel: require('./hotel'),
-      Place: require('./place'),
+      // Place: require('./place'),
       Trip: require('./trip'),
       Day: require('./day'),
       DayHotel: require('./dayhotel'),
