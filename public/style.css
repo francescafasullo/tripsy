@@ -68,3 +68,7 @@ body {
 .whoami {
   margin-top: 10px;
 }
+
+.form-control {
+  width: 90%;
+}

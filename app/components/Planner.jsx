@@ -5,7 +5,7 @@ import SearchBox from '../../node_modules/react-google-maps/lib/places/SearchBox
 import store from '../store'
 import { Button } from 'react-bootstrap'
 
-let userLat, userLong, map
+let userLat, userLong, map, markers, markerObjs
 
 const INPUT_STYLE = {
   boxSizing: `border-box`,
@@ -23,13 +23,23 @@ const INPUT_STYLE = {
   font: 'Nunito'
 }
 
+const googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyCSH0mMN3IHNrDQFpKS38qI_HuIibBhmnY"
+
 const InitialMap = withGoogleMap(props => {
   return (
     <GoogleMap
       ref={props.onMapMounted}
       zoom={props.zoom}
       center={props.center}
+      googleMapURL={googleMapURL}
     >
+    {
+      markerObjs && markerObjs.map((marker, index) => (
+        <Marker
+          {...marker}
+        />
+      ))
+    }
     </GoogleMap>
   )
 })
@@ -47,8 +57,27 @@ export default class Planner extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('NEXT PROPS', nextProps)
+    if (nextProps.trip.currentDay) {
+      const hotelPlaces = nextProps.trip.currentDay.hotels.map(hotel => hotel.location)
+      const restaurantPlaces = nextProps.trip.currentDay.restaurants.map(restaurant => restaurant.location)
+      const activityPlaces = nextProps.trip.currentDay.activities.map(activity => activity.location)
+      markers = hotelPlaces.concat(restaurantPlaces).concat(activityPlaces)
+      console.log('MARKERS', markers)
+      markerObjs = markers.map(marker => {
+        console.log('da marker yaaaa', marker[0])
+        return new google.maps.Marker({
+          position: {lat: marker[0], lng: marker[1]},
+          map: map
+        })
+      })
+    }
+  }
+
   render() {
     console.log('PLANNER PROPS', this.props.trip)
+    console.log('Marker objects in render', markerObjs)
     return (
       <div className="container no-margin clearfix">
         <div className="row">
@@ -62,43 +91,52 @@ export default class Planner extends Component {
               }
               center={this.state.center}
               zoom={this.state.zoom}
-            />
+            >
+            </InitialMap>
           </div>
           <div className="col-lg-6 col-md-6 col-sm-6 col-xs-6">
             <div className="itinerary-selector panel panel-dafault">
-              <h3>Hotels</h3>
-              <select>
-                {
-                  this.props.trip ? this.props.trip.trip.hotels.map(hotel => {
-                    return (
-                      <option key={hotel.id} value={hotel.name}>{hotel.name}</option>
-                    )
-                  }) : null
-                }
-              </select>
-              <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
-              <h3>Restaurants</h3>
-              <select>
-                {
-                  this.props.trip ? this.props.trip.trip.restaurants.map(restaurant => {
-                    return (
-                      <option key={restaurant.id} value={restaurant.name}>{restaurant.name}</option>
-                    )
-                  }) : null
-                }
-              </select>
-              <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
-              <h3>Activities</h3>
-              <select>
-                {
-                  this.props.trip ? this.props.trip.trip.activities.map(activity => {
-                    return (
-                      <option key={activity.id} value={activity.name}>{activity.name}</option>
-                    )
-                  }) : null
-                }
-              </select>
-              <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
+              <form>
+                <div className="form-group">
+                  <label for="hotel-select">Hotels</label>
+                  <select className="form-control" id="hotel-select">
+                    {
+                      this.props.trip ? this.props.trip.trip.hotels.map(hotel => {
+                        return (
+                          <option key={hotel.id} value={hotel.name}>{hotel.name}</option>
+                        )
+                      }) : null
+                    }
+                  </select>
+                  <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
+                </div>
+                <div className="form-group">
+                  <label for="hotel-select">Restaurants</label>
+                  <select className="form-control" id="restaurant-select">
+                    {
+                      this.props.trip ? this.props.trip.trip.restaurants.map(restaurant => {
+                        return (
+                          <option key={restaurant.id} value={restaurant.name}>{restaurant.name}</option>
+                        )
+                      }) : null
+                    }
+                  </select>
+                  <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
+                </div>
+                <div className="form-group">
+                  <label for="activity-select">Activities</label>
+                  <select className="form-control" id="activity-select">
+                    {
+                      this.props.trip ? this.props.trip.trip.activities.map(activity => {
+                        return (
+                          <option key={activity.id} value={activity.name}>{activity.name}</option>
+                        )
+                      }) : null
+                    }
+                  </select>
+                  <button data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
+                </div>
+              </form>
             </div>
             <div className="itinerary panel panel-dafault">
               <h3>Itinerary</h3>
