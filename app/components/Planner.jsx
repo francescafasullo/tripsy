@@ -23,19 +23,17 @@ const INPUT_STYLE = {
   font: 'Nunito'
 }
 
-const googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.27&libraries=places,geometry&key=AIzaSyCSH0mMN3IHNrDQFpKS38qI_HuIibBhmnY"
-
 const InitialMap = withGoogleMap(props => {
   return (
     <GoogleMap
       ref={props.onMapMounted}
       zoom={props.zoom}
       center={props.center}
-      googleMapURL={googleMapURL}
     >
     {
       markerObjs && markerObjs.map((marker, index) => (
         <Marker
+          key={index}
           {...marker}
         />
       ))
@@ -58,15 +56,12 @@ export default class Planner extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('NEXT PROPS', nextProps)
     if (nextProps.trip.currentDay) {
       const hotelPlaces = nextProps.trip.currentDay.hotels.map(hotel => hotel.location)
       const restaurantPlaces = nextProps.trip.currentDay.restaurants.map(restaurant => restaurant.location)
       const activityPlaces = nextProps.trip.currentDay.activities.map(activity => activity.location)
       markers = hotelPlaces.concat(restaurantPlaces).concat(activityPlaces)
-      console.log('MARKERS', markers)
       markerObjs = markers.map(marker => {
-        console.log('da marker yaaaa', marker[0])
         return new google.maps.Marker({
           position: {lat: marker[0], lng: marker[1]},
           map: map
@@ -76,8 +71,9 @@ export default class Planner extends Component {
   }
 
   render() {
-    console.log('PLANNER PROPS', this.props.trip)
-    console.log('Marker objects in render', markerObjs)
+    console.log('planner props', this.props)
+    let numDays = this.props.trip ? this.props.trip.days.length : null
+    console.log('how many days', numDays)
     return (
       <div className="container no-margin clearfix">
         <div className="row">
@@ -149,7 +145,7 @@ export default class Planner extends Component {
                       )
                     }) : null
                   }
-                  <Button className="btn btn-circle day-btn" id="day-add">+</Button>
+                  <Button className="btn btn-circle day-btn" id="day-add" onClick={() => this.props.addDayToTrip(this.props.trip.trip.id, numDays + 1)}>+</Button>
                 </div>
               </div>
               <div className="panel-body">

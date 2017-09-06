@@ -71,7 +71,7 @@ export const fetchDays = (tripId) =>
 
 export const fetchDay = (dayId) =>
   dispatch => {
-    axios.get(`/api/trips/days/${dayId}`)
+    axios.get(`/api/days/${dayId}`)
       .then(res => res.data)
       .then(day => dispatch(getDay(day)))
       .catch(err => console.error(err))
@@ -79,12 +79,17 @@ export const fetchDay = (dayId) =>
 
 export const setFirstDay = (tripId) =>
   dispatch => {
-    axios.get(`/api/trips/${tripId}/days/1`)
+    axios.get(`/api/days/${tripId}/days/1`)
       .then(res => res.data)
       .then(day => {
-        console.log('day', day)
         dispatch(getDay(day))
       })
+      .catch(err => console.error(err))
+  }
+
+export const addDayToTrip = (tripId, dayNum) =>
+  dispatch => {
+    axios.post(`/api/days/${tripId}/days/${dayNum}`)
       .catch(err => console.error(err))
   }
 
